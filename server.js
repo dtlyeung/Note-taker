@@ -14,14 +14,14 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-// Route - GET notes
+// Route - sendFiles to notes.html
 app.get("/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/notes.html"));
+    res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
 // Route - Read db and return notes as JSON
 app.get("/api/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "/db/db.json"));
+    res.sendFile(path.join(__dirname, "./db/db.json"));
 });
 
 // Route - Index.html
@@ -32,17 +32,17 @@ app.get("*", (req, res) => {
 // Add new notes to db
 app.post("/api/notes", (req, res) => {
     let newNote = req.body;
-    let noteList = JSON.parse(fs.readFileSync("/db/db.json", "utf-8"))
+    let noteList = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"))
     let noteLength = (noteList.length).toString();
 
-    //
+    // Create newNote ID based on note length
     newNote.id = noteLength;
 
-    //
+    // Push new notes
     noteList.push(newNote);
 
-    //
-    fs.writeFileSync("/db/db.json", JSON.stringify(noteList));
+    // Send to db.json
+    fs.writeFileSync("./db/db.json", JSON.stringify(noteList));
 });
 
 app.listen(PORT, () => console.log('Server listening on port' + PORT));
